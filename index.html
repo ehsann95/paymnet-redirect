@@ -29,8 +29,43 @@
     <title>Payment</title>
   </head>
   <body>
-    <div class="text-center">
+    <div class="text-center my-4">
       <h3>Thanks for shopping with us.</h3>
     </div>
+    <div class="m-3">
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#exampleModal"
+        data-backdrop="static"
+        id="btn_chkout"
+      >
+        Proceed to Checkout
+      </button>
+    </div>
+
+    <script>
+      let checkoutBtn = document.getElementById("btn_chkout");
+
+      checkoutBtn.addEventListener("click", validation);
+
+      function validation() {
+        fetch("https://backoffice.noqod.sd/gateway/v1/validation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer 722840f1b09ed563ac8b74b14dce3d3d9bb11c392dafabced4ef0188beb9e237313f0aa027cdd5ff90cd50832359981473087be5a4216a6c7fb674e6f2736a76",
+          },
+          body: JSON.stringify({
+            merchantId: "7006911868",
+            callbackUrl: "https://eager-villani-4e5c4e.netlify.app/",
+          }),
+        })
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      }
+    </script>
   </body>
 </html>
