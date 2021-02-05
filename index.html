@@ -59,30 +59,35 @@
           "https://gifted-kalam-27dc7f.netlify.app/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
       }
       window.addEventListener("DOMContentLoaded", (e) => {
-        params = getParams("transactionId", "orderId");
+        params = getParams("transactionId", "orderId", "paymentCapture");
         if (params?.transactionId) {
           document.getElementById("orderDetails").innerHTML = `
           <div class="text-center">
             <h4>Order ID: ${params.transactionId}</h4>
             <h4>Transaction ID: ${params.orderId}</h4>
+            <h5>Payment Capture: ${params.paymentCapture}</h5>
           </div>
           `;
           checkoutBtn.style.display = "none";
         }
       });
 
-      function getParams(trans, order) {
+      function getParams(trans, order, payCapture) {
         var transactionId = new RegExp("[\?&]" + trans + "=([^&#]*)").exec(
           window.location.href
         );
         var orderId = new RegExp("[\?&]" + order + "=([^&#]*)").exec(
           window.location.href
         );
+        var paymentCapture = new RegExp(
+          "[\?&]" + payCapture + "=([^&#]*)"
+        ).exec(window.location.href);
 
         if (transactionId && orderId) {
           return {
             transactionId: transactionId[1],
             orderId: orderId[1],
+            paymentCapture: paymentCapture[1],
           };
         }
       }
