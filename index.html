@@ -26,13 +26,13 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-    <title>Payment</title>
+    <title>Callback</title>
   </head>
   <body>
     <div class="text-center my-4">
-      <h3>Thanks for shopping with us.</h3>
+      <!-- <h3>Thanks for shopping with us.</h3> -->
     </div>
-    <!-- <div class="m-3">
+    <div class="m-3">
       <button
         type="button"
         class="btn btn-primary"
@@ -43,27 +43,32 @@
       >
         Proceed to Checkout
       </button>
-    </div> -->
+    </div>
     <div id="orderDetails"></div>
 
     <script>
       let params = {};
-      // let checkoutBtn = document.getElementById("btn_chkout");
-      // checkoutBtn.addEventListener("click", sendParams);
+      let checkoutBtn = document.getElementById("btn_chkout");
+      checkoutBtn.addEventListener("click", sendParams);
 
-      // function sendParams() {
-      //   window.location.href =
-      //     "http://127.0.0.1:5500/index.html?merchantId=7006911868&amount=20&callback=https://eager-villani-4e5c4e.netlify.app/";
-      // }
+      function sendParams() {
+        // window.location.href =
+        //   "http://127.0.0.1:5500/index.html?merchantId=7006911868&amount=20&orderId=19012138137211&callback=http://127.0.0.1:5501/index.html";
+
+        window.location.href =
+          "https://gifted-kalam-27dc7f.netlify.app/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
+      }
       window.addEventListener("DOMContentLoaded", (e) => {
         params = getParams("transactionId", "orderId");
-
-        document.getElementById("orderDetails").innerHTML = `
-        <div class="text-center">
-          <h4>Order ID: ${params.transactionId}</h4>
-          <h4>Transaction ID: ${params.orderId}</h4>
-        </div>
-        `;
+        if (params?.transactionId) {
+          document.getElementById("orderDetails").innerHTML = `
+          <div class="text-center">
+            <h4>Order ID: ${params.transactionId}</h4>
+            <h4>Transaction ID: ${params.orderId}</h4>
+          </div>
+          `;
+          checkoutBtn.style.display = "none";
+        }
       });
 
       function getParams(trans, order) {
