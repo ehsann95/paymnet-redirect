@@ -48,9 +48,13 @@
 
     <script>
       let params = {};
-      let gatewayUrl = "https://epic-lumiere-bcf712.netlify.app/"; //"http://127.0.0.1:3000/";
+      let gatewayUrl = "https://epic-lumiere-bcf712.netlify.app/";
+      // let gatewayUrl = "http://127.0.0.1:3000/";
+
+      // let urlParams =
+      //   "?merchant_id=7006911868&amount=20&order_id=19012138137211&callback=http://127.0.0.1:5501/index.html";
       let urlParams =
-        "?merchantId=7006911868&amount=20&orderId=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
+        "?merchant_id=7006911868&amount=20&order_id=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
       let iframeUrl = `${gatewayUrl}${urlParams}`;
       let checkoutBtn = document.getElementById("btn_chkout");
       let body = document.body;
@@ -98,7 +102,7 @@
         //   "https://gifted-kalam-27dc7f.netlify.app/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
       }
       window.addEventListener("DOMContentLoaded", (e) => {
-        params = getParams("transactionId", "orderId", "paymentCapture");
+        params = getParams("transaction_id", "order_id", "payment_capture");
         if (params?.transactionId) {
           document.getElementById("orderDetails").innerHTML = `
           <div class="text-center">
