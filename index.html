@@ -3,104 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-      crossorigin="anonymous"
-    />
-
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway/index.js"></script>
     <title>Callback</title>
   </head>
   <body>
-    <div class="text-center my-4"></div>
-    <div class="m-3">
+    <div>
       <button
-        type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#exampleModal"
-        data-backdrop="static"
+        style="
+          background-color: #388fe9;
+          color: #fff;
+          border: none;
+          padding: 0.7rem;
+          font-size: 1.2rem;
+          outline: none;
+          letter-spacing: 0.09rem;
+        "
         id="btn_chkout"
       >
-        Proceed to Checkout
+        Proceed
       </button>
     </div>
     <div id="orderDetails"></div>
 
-    <div id="iframee"></div>
-
     <script>
       let params = {};
-      let gatewayUrl = "https://epic-lumiere-bcf712.netlify.app/";
-      // let gatewayUrl = "http://127.0.0.1:3000/";
 
-      // let urlParams =
-      //   "?merchant_id=7006911868&amount=20&order_id=19012138137211&callback=http://127.0.0.1:5501/index.html";
-      let urlParams =
-        "?merchant_id=7006911868&amount=20&order_id=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
-      let iframeUrl = `${gatewayUrl}${urlParams}`;
+      // ***************** GATEWAY *******************
       let checkoutBtn = document.getElementById("btn_chkout");
-      let body = document.body;
-      // checkoutBtn.addEventListener("click", sendParams);
-      // let frame = "<iframe
-      //   style='width: 100%; height: 80vh'
-      //   src='http://127.0.0.1:3000/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=http://127.0.0.1:5501/index.html'
-      // />"
-
-      function handleChekout() {
-        document.getElementById("iframee").innerHTML = `
-        <div
-          id="iframee"
-          style="
-            background-color: rgba(0, 0, 0, 0.5);
-            height: 100vh;
-            width: 100vw;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center
-          "
-        >
-          <iframe
-            style="width: 500px; height: 650px; border:none; padding: 0px; overflow-x: hidden;"
-            src=${iframeUrl}
-          /> 
-        </div>
-        `;
-      }
 
       checkoutBtn.addEventListener("click", handleChekout);
 
-      function sendParams() {
-        // https: window.location.href =
-        //   "https://epic-lumiere-bcf712.netlify.app/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
+      let noqod = npg("7006911868");
 
-        // epic-lumiere-bcf712.netlify.app/
-        https: window.location.href =
-          "http://127.0.0.1:3000/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=http://127.0.0.1:5501/index.html";
-
-        // window.location.href =
-        //   "https://gifted-kalam-27dc7f.netlify.app/?merchantId=7006911868&amount=20&orderId=19012138137211&callback=https://eager-villani-4e5c4e.netlify.app/";
+      function handleChekout() {
+        noqod.sendRequest(
+          "200",
+          "19012138137211",
+          "https://eager-villani-4e5c4e.netlify.app/"
+        );
       }
+
+      // *********** After Payment - CALLBACK ****************
       window.addEventListener("DOMContentLoaded", (e) => {
         params = getParams("transaction_id", "order_id", "payment_capture");
         if (params?.transactionId) {
