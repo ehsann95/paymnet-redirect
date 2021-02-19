@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway/index.js"></script>
+    <!-- <script src="./index.js"></script> -->
     <title>Callback</title>
   </head>
   <body>
@@ -23,7 +24,19 @@
         Proceed
       </button>
     </div>
-    <div id="orderDetails"></div>
+
+    <div id="iframe"></div>
+
+    <div
+      id="orderDetails"
+      style="
+        background-color: #fff;
+        padding: 1rem;
+        text-align: center;
+        max-width: 400px;
+        min-height: 500px;
+      "
+    ></div>
 
     <script>
       let params = {};
@@ -51,7 +64,7 @@
           <div class="text-center">
             <h4>Order ID: ${params.transactionId}</h4>
             <h4>Transaction ID: ${params.orderId}</h4>
-            <h5>Payment Capture: ${params.paymentCapture}</h5>
+            <h4>Payment Capture: ${params.paymentCapture}</h4>
           </div>
           `;
           checkoutBtn.style.display = "none";
