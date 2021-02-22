@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@main/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@token/index.js"></script>
     <!-- <script src="./index.js"></script> -->
     <title>Callback</title>
   </head>
@@ -25,6 +25,7 @@
       </button>
     </div>
 
+    <!-- Must include div with iframe id -->
     <div id="iframe"></div>
 
     <div
@@ -40,13 +41,15 @@
 
     <script>
       let params = {};
+      let myToken =
+        "722840f1b09ed563ac8b74b14dce3d3d9bb11c392dafabced4ef0188beb9e237313f0aa027cdd5ff90cd50832359981473087be5a4216a6c7fb674e6f2736a76";
 
       // ***************** GATEWAY *******************
       let checkoutBtn = document.getElementById("btn_chkout");
 
       checkoutBtn.addEventListener("click", handleChekout);
 
-      let noqod = npg("7006911868");
+      let noqod = npg("7006911868", myToken);
 
       function handleChekout() {
         noqod.sendRequest(
