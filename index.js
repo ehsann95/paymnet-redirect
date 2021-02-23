@@ -42,6 +42,15 @@
                     </div>`;
   }
 
+  window.addEventListener("message", removeIframe, false);
+
+  function removeIframe(e) {
+    const { callback, transactionId, payCapture, orderId } = e.data;
+    console.log(e.data);
+    document.getElementById("iframe").innerHTML = "";
+    window.location.href = `${callback}?transaction_id=${transactionId}&order_id=${orderId}&payment_capture=${payCapture}`;
+  }
+
   npg.prototype = {
     sendRequest: function (amount, order_id, callback) {
       sendPaymentRequest(
