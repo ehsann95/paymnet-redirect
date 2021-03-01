@@ -3464,15 +3464,16 @@
     self.token = token;
   };
 
-  function sendPaymentRequest(merchant_id, amount, order_id, callback, token) {
+  function sendPaymentRequest(
+    merchant_id,
+    amount,
+    order_id,
+    callback,
+    token,
+    key
+  ) {
     // let gatewayUrl = "https://epic-lumiere-bcf712.netlify.app/";
     let gatewayUrl = "http://127.0.0.1:3000/";
-
-    let encryptData = { merchant_id, amount, order_id, token };
-    let key = CryptoJS.PBKDF2(JSON.stringify(encryptData), merchant_id, {
-      keySize: 256 / 32,
-      iterations: 1000,
-    }).toString();
 
     let urlParams = `?merchant_id=${merchant_id}&amount=${amount}&order_id=${order_id}&callback=${callback}&token=${token}&key=${key}`;
     injectIframe(gatewayUrl, urlParams);
@@ -3515,14 +3516,23 @@
   }
 
   npg.prototype = {
-    sendRequest: function (amount, order_id, callback) {
+    sendRequest: function (amount, order_id, callback, key) {
       sendPaymentRequest(
         this.merchant_id,
         amount,
         order_id,
         callback,
-        this.token
+        this.token,
+        key
       );
+    },
+    hashInfo: function (merchant_id, amount, order_id) {
+      let encryptData = { merchant_id, amount, order_id };
+      let key = CryptoJS.PBKDF2(JSON.stringify(encryptData), merchant_id, {
+        keySize: 256 / 32,
+        iterations: 1000,
+      }).toString();
+      return key;
     },
   };
 

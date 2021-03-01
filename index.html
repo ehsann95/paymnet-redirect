@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@cryptojs/npg.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/gh/NOQOD/payment-gateway@main/index.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/NOQOD/payment-gateway@hash/index.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@cryptojs/npg.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@hashInfo/npg.js"></script>
 
     <!-- <script src="./index.js"></script> -->
     <title>Callback</title>
@@ -52,12 +53,14 @@
       checkoutBtn.addEventListener("click", handleChekout);
 
       let noqod = npg("7006911868", myToken);
+      let signature = noqod.hashInfo("7006911868", "550", "19012138137211");
 
       function handleChekout() {
         noqod.sendRequest(
           "550",
           "19012138137211",
-          "https://eager-villani-4e5c4e.netlify.app/"
+          "https://eager-villani-4e5c4e.netlify.app/",
+          signature
         );
       }
 
