@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <script src="https://cdn.jsdelivr.net/gh/NOQOD/payment-gateway@hash/index.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@cryptojs/npg.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@hashInfo/npg.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@hashInfo/npg.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@signature/npg.js"></script>
 
     <!-- <script src="./index.js"></script> -->
     <title>Callback</title>
@@ -52,13 +52,28 @@
 
       checkoutBtn.addEventListener("click", handleChekout);
 
-      let noqod = npg("7006911868", myToken);
-      let signature = noqod.hashInfo("7006911868", "550", "19012138137211");
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+      }
+      let randomOrderId = getRandomInt(
+        10012138137211,
+        1991919999999
+      ).toString();
 
+      let noqod = npg("7006911868", myToken);
+      let signature = noqod.hashInfo("7006911868", "550", randomOrderId);
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+      }
       function handleChekout() {
         noqod.sendRequest(
           "550",
-          "19012138137211",
+          randomOrderId, // "19012138137211",
           "https://eager-villani-4e5c4e.netlify.app/",
           signature
         );
@@ -66,35 +81,37 @@
 
       // *********** After Payment - CALLBACK ****************
       window.addEventListener("DOMContentLoaded", (e) => {
-        params = getParams("transaction_id", "order_id", "payment_capture");
+        params = getParams("transaction_id", "order_id", "signature");
         if (params?.transactionId) {
           document.getElementById("orderDetails").innerHTML = `
-          <div class="text-center">
-            <h4>Order ID: ${params.transactionId}</h4>
-            <h4>Transaction ID: ${params.orderId}</h4>
-            <h4>Payment Capture: ${params.paymentCapture}</h4>
-          </div>
-          `;
+                <div class="text-center">
+                  <h4>Order ID: ${params.orderId}</h4>
+                  <h4>Transaction ID: ${params.transactionId}</h4>
+                  
+                </div>
+                `;
           checkoutBtn.style.display = "none";
         }
       });
 
-      function getParams(trans, order, payCapture) {
+      function getParams(trans, order, sign) {
         var transactionId = new RegExp("[\?&]" + trans + "=([^&#]*)").exec(
           window.location.href
         );
         var orderId = new RegExp("[\?&]" + order + "=([^&#]*)").exec(
           window.location.href
         );
-        var paymentCapture = new RegExp(
-          "[\?&]" + payCapture + "=([^&#]*)"
-        ).exec(window.location.href);
+
+        var signature = new RegExp("[\?&]" + sign + "=([^&#]*)").exec(
+          window.location.href
+        );
 
         if (transactionId && orderId) {
           return {
             transactionId: transactionId[1],
             orderId: orderId[1],
-            paymentCapture: paymentCapture[1],
+            // paymentCapture: paymentCapture[1],
+            signature: signature[1],
           };
         }
       }

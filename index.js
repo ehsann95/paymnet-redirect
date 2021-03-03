@@ -3509,10 +3509,10 @@
   window.addEventListener("message", removeIframe, false);
 
   function removeIframe(e) {
-    const { callback, transactionId, payCapture, orderId } = e.data;
-    console.log(e.data);
+    const { callback, transactionId, orderId, key } = e.data;
+    console.log("REMOVE IFRAME ==== ", e.data);
     document.getElementById("iframe").innerHTML = "";
-    window.location.href = `${callback}?transaction_id=${transactionId}&order_id=${orderId}&payment_capture=${payCapture}`;
+    window.location.href = `${callback}?transaction_id=${transactionId}&order_id=${orderId}&signature=${key}`;
   }
 
   npg.prototype = {
