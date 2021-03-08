@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@hashInfo/npg.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@signature/npg.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/NOQOD/payment-gateway-library@vversion-1/index.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@signature/npg.js"></script> -->
 
     <!-- <script src="./index.js"></script> -->
     <title>Callback</title>
@@ -65,11 +65,11 @@
       let noqod = npg("7006911868", myToken);
       let signature = noqod.hashInfo("7006911868", "550", randomOrderId);
 
-      function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-      }
+      // function getRandomInt(min, max) {
+      //   min = Math.ceil(min);
+      //   max = Math.floor(max);
+      //   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+      // }
       function handleChekout() {
         noqod.sendRequest(
           "550",
@@ -81,20 +81,27 @@
 
       // *********** After Payment - CALLBACK ****************
       window.addEventListener("DOMContentLoaded", (e) => {
-        params = getParams("transaction_id", "order_id", "signature");
+        params = getParams("transaction_id", "order_id", "signature", "order");
         if (params?.transactionId) {
           document.getElementById("orderDetails").innerHTML = `
                 <div class="text-center">
                   <h4>Order ID: ${params.orderId}</h4>
                   <h4>Transaction ID: ${params.transactionId}</h4>
-                  
                 </div>
                 `;
           checkoutBtn.style.display = "none";
         }
       });
 
-      function getParams(trans, order, sign) {
+      function verifySignature() {
+        if (params.signature == signature) {
+          console.log("SIGNATURE VERIFIED");
+        } else {
+          console.log("NOT VERIFIED");
+        }
+      }
+
+      function getParams(trans, order, sign, flag) {
         var transactionId = new RegExp("[\?&]" + trans + "=([^&#]*)").exec(
           window.location.href
         );
@@ -105,12 +112,15 @@
         var signature = new RegExp("[\?&]" + sign + "=([^&#]*)").exec(
           window.location.href
         );
+        var orderFlag = new RegExp("[\?&]" + flag + "=([^&#]*)").exec(
+          window.location.href
+        );
 
         if (transactionId && orderId) {
           return {
             transactionId: transactionId[1],
             orderId: orderId[1],
-            // paymentCapture: paymentCapture[1],
+            order: orderFlag[1],
             signature: signature[1],
           };
         }
