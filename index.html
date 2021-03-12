@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="https://cdn.jsdelivr.net/gh/NOQOD/payment-gateway-library@vversion-1/index.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/NOQOD/payment-gateway-library@vversion-1/index.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/gh/ehsann95/noqod-gateway@signature/npg.js"></script> -->
 
-    <!-- <script src="./index.js"></script> -->
+    <script src="./index.js"></script>
     <title>Callback</title>
   </head>
   <body>
@@ -62,7 +62,7 @@
         1991919999999
       ).toString();
 
-      let noqod = npg("7006911868", myToken);
+      let noqod = npg("7006911868", myToken, "staging"); // "sandbox" or "live"
       let signature = noqod.hashInfo("7006911868", "550", randomOrderId);
 
       // function getRandomInt(min, max) {
